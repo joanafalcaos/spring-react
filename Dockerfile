@@ -1,20 +1,15 @@
-# Use uma imagem com Gradle e JDK instalados
-FROM gradle:8.4-jdk17 AS builder
-
-# Diretório de trabalho no container
+#
+# Build stage
+#
+FROM maven:3.9-eclipse-temurin-21-alpine AS build
 WORKDIR /app
-
-# Copia os arquivos para o container
 COPY . .
+RUN mvn clean package -DskipTests
 
-# Permite execução do Gradle Wrapper
-RUN chmod +x ./gradlew
-
-# Resolve dependências para evitar cache em mudanças futuras
-RUN ./gradlew dependencies
-
-# Expõe a porta padrão do Spring Boot
-EXPOSE 8080
-
-# Comando para rodar em modo desenvolvimento (hot reload)
-CMD ["./gradlew", "bootRun"]
+#
+# Package stage
+#
+FROM eclipse-temurin:21-jdk-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]

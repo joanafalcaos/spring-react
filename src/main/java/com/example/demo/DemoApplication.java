@@ -1,13 +1,13 @@
-package com.unicap.spring_react_app;
+package com.example.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringReactAppApplication {
+public class DemoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringReactAppApplication.class, args);
+		SpringApplication.run(DemoApplication.class, args);
 	}
 
 }
